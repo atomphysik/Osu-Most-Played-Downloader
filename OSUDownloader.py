@@ -3,7 +3,6 @@ import requests
 import os
 import string
 import unicodedata
-import time
 
 validFilenameChars = "-_.() %s%s" % (string.ascii_letters, string.digits)
 def removeDisallowedFilenameChars(filename):
@@ -12,50 +11,29 @@ def removeDisallowedFilenameChars(filename):
 
 user_id = int(input('Enter User ID from profile URL: '))
 number_of_maps = int(input('Enter top number of maps to download: '))
+osu_session_cookie = str(input('Enter osu session token, instructions in github readme: '))
 
-print('\nThere will be a 2 second delay between each download to prevent error for too many requests')
+r = requests.get(f'https://osu.ppy.sh/users/{user_id}/beatmapsets/most_played?offset=0&limit={number_of_maps}')
+data = r.json()
 
-beatmap_id_set = set() # set used to keep track of downloaded beatmaps
-beatmap_count = 0
+try:
+    os.makedirs("./songs")
+except FileExistsError:
+    pass
 
-offset = 0
-
-while(number_of_maps > 0):
+for beatmap in data:
+    beatmap_id = beatmap['beatmapset']['id']
+    beatmap_title = removeDisallowedFilenameChars(str(beatmap['beatmapset']['title']))
+    download_url = f"https://osu.ppy.sh/beatmapsets/{beatmap_id}/download?noVideo=1"
     
-    r = requests.get(f'https://osu.ppy.sh/users/{user_id}/beatmapsets/most_played?offset={offset}&limit={number_of_maps}')
-    data = r.json()
-
-    try:
-        os.makedirs("./songs")
-    except FileExistsError:
-        pass
-
-    for beatmap in data:
-
-        beatmap_count += 1
-
-        beatmap_id = beatmap['beatmapset']['id']
-        beatmap_title = removeDisallowedFilenameChars(str(beatmap['beatmapset']['title']))
-
-        if beatmap_id in beatmap_id_set:
-            print(f'\nSkipping duplicate --> {beatmap_count}. {beatmap_title}')
-            continue
-        else:
-            beatmap_id_set.add(beatmap_id)
-
-        if beatmap_count != 1 : time.sleep(2) # delay put to prevent error 429, delay skipped for the first download
-
-        download_url = f"https://beatconnect.io/b/{beatmap_id}/"
-        
-        print(f'\n-------{beatmap_id}-------')
-        print(download_url)
-        print(f'ssibal download joong: {beatmap_count}. ' + str(beatmap_title))
-        
-        r = requests.get(download_url)
-
-        with open(f'./songs/{beatmap_id} {beatmap_title}.osz', 'wb') as f:  
-            f.write(r.content)
-
+    print(f'\n-------{beatmap_id}-------')
+    print(download_url)
+    print('Downloading beatmap: ' + str(beatmap_title))
     
-    number_of_maps -= 51 # number of maps left
-    offset += 51 # site only allows 51 downloads each request
+    cookies = {'osu_session': osu_session_cookie}
+    r = requests.get(download_url, cookies=cookies)
+
+    with open(f'./songs/{beatmap_title}.osz', 'wb') as f:  
+        f.write(r.content)
+
+        
