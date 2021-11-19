@@ -1,6 +1,7 @@
 # Download Osu players most played songs
 
 ## What you'll need
+
 ### This git repository
 * Download in the top right as a zip file, or type the git clone url in the same place into your powershell/cmd .
 ### Osu players ID
@@ -18,28 +19,31 @@
 
 ## What does it look like?
 The output should look something like this as it downloads the songs:
+
 ```
+There will be a 2 second delay between each download to prevent error for too many requests
+
 -------362718-------
-https://osu.ppy.sh/beatmapsets/362718/download?noVideo=1
-Downloading beatmap: IM A BELIEVER
+https://beatconnect.io/b/362718/
+ssibal download joong: 1. IM A BELIEVER
 
 -------264819-------
-https://osu.ppy.sh/beatmapsets/264819/download?noVideo=1
-Downloading beatmap: Chameleon Love  feat.Kano
+https://beatconnect.io/b/264819/
+ssibal download joong: 2. Chameleon Love  feat.Kano
 
 -------147177-------
-https://osu.ppy.sh/beatmapsets/147177/download?noVideo=1
-Downloading beatmap: Idola no Circus
+https://beatconnect.io/b/147177/
+ssibal download joong: 3. Idola no Circus
 
 -------104801-------
-https://osu.ppy.sh/beatmapsets/104801/download?noVideo=1
-Downloading beatmap: Zetsubousei Hero Chiryouyaku (TV Size)
+https://beatconnect.io/b/104801/
+ssibal download joong: 4. Zetsubousei Hero Chiryouyaku (TV Size)
 
 -------264819-------
-https://osu.ppy.sh/beatmapsets/264819/download?noVideo=1
-Downloading beatmap: Chameleon Love  feat.Kano
+https://beatconnect.io/b/264819/
+ssibal download joong: 5. Chameleon Love  feat.Kano
 
 -------147962-------
-https://osu.ppy.sh/beatmapsets/147962/download?noVideo=1
-Downloading beatmap: Omega Rhythm
+https://beatconnect.io/b/147962/
+ssibal download joong: 6. Omega Rhythm
 ```
