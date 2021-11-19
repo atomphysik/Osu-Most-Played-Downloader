@@ -52,9 +52,19 @@ while(number_of_maps > 0):
         print(f'ssibal download joong: {beatmap_count}. ' + str(beatmap_title))
         
         r = requests.get(download_url)
-
-        with open(f'./songs/{beatmap_id} {beatmap_title}.osz', 'wb') as f:  
+        headers = r.headers
+        file_size = headers.get('Content-Length')
+        
+        if file_size < 10000 :
+            print('cannot connect to bc server or beatmap does not exist in bc')
+            leave = str(input('Do you wanna continue downloading? y/n'))
+            if leave == 'y' :
+                return
+        else:
+            with open(f'./songs/{beatmap_id} {beatmap_title}.osz', 'wb') as f:  
             f.write(r.content)
+
+        
 
     
     number_of_maps -= 51 # number of maps left
