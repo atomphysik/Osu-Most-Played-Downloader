@@ -57,10 +57,15 @@ while(number_of_maps > 0):
         
         if file_size < 10000:
             print('cannot connect to bc server or beatmap does not exist in bc')
-            bye = str(input('Do you wanna continue downloading? y/n: '))
-            if bye == "y":
-                quit()
-        else:
+            bye = ""
+            while(bye != "y" and bye != "Y" and bye != "n" and bye != "N") :
+                bye = str(input('Do you wanna continue downloading? y/n: '))
+                if bye == "y" or bye == "Y" :
+                    quit()
+                elif bye == "n" or bye == "N" :
+                    with open(f'./songs/{beatmap_id} {beatmap_title}.osz', 'wb') as f:  
+                        f.write(r.content)
+        else :
             with open(f'./songs/{beatmap_id} {beatmap_title}.osz', 'wb') as f:  
                 f.write(r.content)
 
