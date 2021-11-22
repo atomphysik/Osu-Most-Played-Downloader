@@ -5,6 +5,7 @@ import string
 import unicodedata
 import time
 
+
 validFilenameChars = "-_.() %s%s" % (string.ascii_letters, string.digits)
 def removeDisallowedFilenameChars(filename):
     cleanedFilename = unicodedata.normalize('NFKD', filename).encode('ASCII', 'ignore')
@@ -24,7 +25,7 @@ while(number_of_maps > 0):
     
     r = requests.get(f'https://osu.ppy.sh/users/{user_id}/beatmapsets/most_played?offset={offset}&limit={number_of_maps}')
     data = r.json()
-
+    
     try:
         os.makedirs("./songs")
     except FileExistsError:
@@ -35,6 +36,7 @@ while(number_of_maps > 0):
         beatmap_count += 1
 
         beatmap_id = beatmap['beatmapset']['id']
+        beatmap_artist = removeDisallowedFilenameChars(str(beatmap['beatmapset']['artist']))
         beatmap_title = removeDisallowedFilenameChars(str(beatmap['beatmapset']['title']))
 
         if beatmap_id in beatmap_id_set:
@@ -66,7 +68,7 @@ while(number_of_maps > 0):
                     with open(f'./songs/{beatmap_id} {beatmap_title}.osz', 'wb') as f:  
                         f.write(r.content)
         else :
-            with open(f'./songs/{beatmap_id} {beatmap_title}.osz', 'wb') as f:  
+            with open(f'./songs/{beatmap_id} {beatmap_artist} - {beatmap_title}.osz', 'wb') as f:  
                 f.write(r.content)
 
         
